@@ -1,0 +1,14 @@
+{
+    "jupyter.jupyterServerType": "remote",
+    "python.formatting.provider": "yapf",
+    "spellright.language": [
+        "en"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext",
+        "python"
+    ],
+    "python.pythonPath": "C:\\Users\\cwher\\AppData\\Local\\Programs\\Python\\Python37\\python.exe"
+}
