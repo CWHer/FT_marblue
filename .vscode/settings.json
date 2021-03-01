@@ -7,8 +7,7 @@
     "spellright.documentTypes": [
         "markdown",
         "latex",
-        "plaintext",
-        "python"
+        "plaintext"
     ],
-    "python.pythonPath": "C:\\Users\\cwher\\AppData\\Local\\Programs\\Python\\Python37\\python.exe"
+    "python.pythonPath": "E:\\Anaconda3\\envs\\python37\\python.exe"
 }
