@@ -39,7 +39,7 @@ class MSTGenerator():
                          (self.points[u, 1], self.points[v, 1]))
 
     # return an adjacency list of MST
-    def generateMST(self):
+    def generateMST(self) -> list:
         n = len(self.points)
         self.g = [[] for i in range(n)]
         edges = set()
@@ -69,3 +69,4 @@ class MSTGenerator():
             union(u, v)
 
         print("finish generate MST")
+        return self.g

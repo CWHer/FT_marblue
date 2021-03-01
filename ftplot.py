@@ -2,7 +2,7 @@
 #   using matplotlib.animation
 #   passing one point each frame
 # input: list of traverse points
-#        2xn np.array
+#        nx2 np.array
 # output: animation
 import numpy as np
 from scipy.fftpack import fft
@@ -15,8 +15,9 @@ class FourierTransPlot():
     def __init__(self, x: np.array):
         # x -> X
         # regular x into [0,1]x[0,1]
-        x = x / x.max()
-        self.X = fft(x[0, :] + x[1, :] * 1j)
+        x_max, x_min = x.max(), x.min()
+        x = (x - x_min) / (x_max - x_min)
+        self.X = fft(x[:, 0] + x[:, 1] * 1j)
         # let frame_number = circle_number
         #   such that it passes one point each frame
         self.number = len(self.X)
