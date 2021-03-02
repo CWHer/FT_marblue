@@ -2,12 +2,14 @@
 #   usually after MST.generate()
 #   traverse all points on MST
 #    and exclude the longest path
+#   optimize path using rdp algorithm
 # input: list of points and an adjacency list of MST
 # output: traverse path of MST
 #           nx2 np.array
 
 import numpy as np
 import math
+import matplotlib.pyplot as plt
 
 
 class PathGenerator():
@@ -56,7 +58,6 @@ class PathGenerator():
             vis.add(x)
             if x == self.t:
                 return True
-            # longest and 2nd longest
             for nxt in self.g[x]:
                 if nxt in vis: continue
                 if dfs(nxt):
@@ -68,7 +69,47 @@ class PathGenerator():
 
         dfs(self.s)
 
+    # distance between point and line
+    # input: point(x,y), start(x,y) and end(x,y)
+    def __pldist(self, point, start, end):
+        # start == end
+        #  np.all applies function to every element
+        if np.all(np.equal(start, end)):
+            return np.linalg.norm(point - start)
+
+        return np.divide(
+            np.abs(np.linalg.norm(np.cross(end - start, start - point))),
+            np.linalg.norm(end - start))
+
+    # Ramer–Douglas–Peucker algorithm
+    def rdp_downsample(self, l: int, r: int, epsilon: float):
+        max_d, idx = 0, 0
+        for i in range(l + 1, r):
+            d = self.__pldist(self.path[i, :], self.path[l, :],
+                              self.path[r, :])
+            if d > max_d:
+                max_d = d
+                idx = i
+
+        if max_d > epsilon:
+            path = []
+            path.extend(self.rdp_downsample(l, idx, epsilon))
+            path.pop()  # remove redundant index
+            path.extend(self.rdp_downsample(idx, r, epsilon))
+            return path
+        else:
+            return [self.path[l], self.path[r]]
+
+    def show(self):
+        _, ax = plt.subplots()
+        ax.scatter(self.path[:, 0], self.path[:, 1], alpha=0.3)
+        for i in range(len(self.path) - 1):
+            ax.plot((self.path[i, 0], self.path[i + 1, 0]),
+                    (self.path[i, 1], self.path[i + 1, 1]))
+        plt.show()
+
     def generatePath(self) -> np.array:
+        # remove diameter in the tree
         self.findDiameter()
         self.reorderGraph()
 
@@ -96,12 +137,17 @@ class PathGenerator():
         try:
             dfs(self.s)
         except FinishTraverse:
-            self.path.append(self.points[self.s])
-        # check if all points are passed by
-        # print(len(vis))
-        assert len(vis) == len(self.g)
+            # check if all points are passed by
+            # print(len(vis))
+            assert len(vis) == len(self.g)
 
         self.path = np.array(self.path)
         print("generate path with {} points".format(len(self.path)))
 
+        # apply Ramer–Douglas–Peucker algorithm
+        self.path = self.rdp_downsample(0, len(self.path) - 1, 8)
+        print("{} points after rdp_downsample".format(len(self.path)))
+
+        self.path.append(self.points[self.s])
+        self.path = np.array(self.path)
         return self.path

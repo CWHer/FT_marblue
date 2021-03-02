@@ -21,18 +21,19 @@ class MSTGenerator():
         return math.sqrt((self.points[x, 0] - self.points[y, 0])**2 +
                          (self.points[x, 1] - self.points[y, 1])**2)
 
-    def show(self):
-        self.__plotTris()
+    def show(self, show_tri=False):
+        if show_tri:
+            plt.subplot(1, 2, 1)
+            self.__plotTris()
+            plt.subplot(1, 2, 2)
         self.__plotMST()
         plt.show()
 
     # show triangulation
     def __plotTris(self):
-        plt.subplot(1, 2, 1)
         plt.triplot(self.points[:, 0], self.points[:, 1], self.tris)
 
     def __plotMST(self):
-        plt.subplot(1, 2, 2)
         for u in range(len(self.g)):
             for v in self.g[u]:
                 plt.plot((self.points[u, 0], self.points[v, 0]),

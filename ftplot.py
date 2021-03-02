@@ -1,6 +1,6 @@
 # plot image after Fourier transform
 #   using matplotlib.animation
-#   passing one point each frame
+#   traverse one point each frame
 # input: list of traverse points
 #        nx2 np.array
 # output: animation
@@ -43,12 +43,15 @@ class FourierTransPlot():
         for i in range(self.number):
             self.pos.append(self.pos[-1] + X[i])
 
-    def plot(self):
+    def plot(self, save_gif=False):
         fig, ax = plt.subplots()
         ax.set(xlim=[0, 1], ylim=[0, 1])
         ax.axis('off')
         # initialize lines
-        lines = [ax.plot([], [], alpha=0.3)[0] for i in range(self.number)]
+        lines = [
+            ax.plot([], [], alpha=0.3, color="#6495ED")[0]
+            for i in range(self.number)
+        ]
         # initialize circles
         circles = []
         for i in range(self.number):
@@ -82,7 +85,8 @@ class FourierTransPlot():
                                   frames=self.number,
                                   interval=10,
                                   repeat_delay=1000)
-        # animation.save("animation.gif", writer="imagemagick", fps=100)
-        # print("finish saving gif")
-
-        plt.show()
+        if save_gif:
+            animation.save("animation.gif", writer="imagemagick", fps=100)
+            print("finish saving gif")
+        else:
+            plt.show()

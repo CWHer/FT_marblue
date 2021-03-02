@@ -28,8 +28,8 @@ class ContourExtract():
 
     # randomly sample points to reduce workload
     def __sample(self):
-        sample_rate = 0.1
-        sample_max = 200
+        sample_rate = 0.3
+        sample_max = 4000
         idx = np.random.choice(len(self.points),
                                min(sample_max,
                                    math.floor(len(self.points) * sample_rate)),
