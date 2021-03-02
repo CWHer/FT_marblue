@@ -29,7 +29,7 @@ class ContourExtract():
     # randomly sample points to reduce workload
     def __sample(self):
         sample_rate = 0.1
-        sample_max = 4000
+        sample_max = 200
         idx = np.random.choice(len(self.points),
                                min(sample_max,
                                    math.floor(len(self.points) * sample_rate)),
@@ -37,7 +37,7 @@ class ContourExtract():
         self.points = self.points[idx]
 
     def show(self):
-        fig, ax = plt.subplots()
+        _, ax = plt.subplots()
         ax.scatter(self.points[:, 0], self.points[:, 1], s=1, alpha=0.5)
         plt.show()
 
@@ -48,8 +48,8 @@ class ContourExtract():
         img = np.array(self.img)
         for i in range(self.img.width):
             for j in range(self.img.height):
-                if img[i, j] < threshold:
-                    points.append([j, self.img.width - i - 1])
+                if img[j, i] < threshold:
+                    points.append([i, self.img.height - j - 1])
 
         self.points = np.array(points)
         print("{} points from image".format(len(self.points)))

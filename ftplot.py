@@ -80,6 +80,9 @@ class FourierTransPlot():
         animation = FuncAnimation(fig,
                                   render_frame,
                                   frames=self.number,
-                                  interval=100)
-        # animation.save("marblue.gif")
+                                  interval=10,
+                                  repeat_delay=1000)
+        # animation.save("animation.gif", writer="imagemagick", fps=100)
+        # print("finish saving gif")
+
         plt.show()
